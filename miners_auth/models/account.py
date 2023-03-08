@@ -2,6 +2,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
+import urllib.parse
 from ..database import db
 
 
@@ -12,6 +13,10 @@ class User(UserMixin, db.Model):
     password: str = db.Column(db.String(500))
     email: str = db.Column(db.String(500))
     created_at: db.DateTime = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @property
+    def encoded_name(self):
+        return urllib.parse.quote_plus(self.name)
 
     def is_authenticated(self):
         return self.authenticated

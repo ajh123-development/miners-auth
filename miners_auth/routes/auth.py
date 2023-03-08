@@ -10,7 +10,7 @@ auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html', user=current_user)
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login_post():
@@ -35,7 +35,7 @@ def login_post():
 
 @auth_blueprint.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('signup.html', user=current_user)
 
 @auth_blueprint.route('/signup', methods=['POST'])
 def signup_post():
@@ -74,7 +74,7 @@ def authorize(*args, **kwargs):
     # NOTICE: for real project, you need to require login
     if request.method == 'GET':
         # render a page for user to confirm the authorization
-        return render_template('authorise.html')
+        return render_template('authorise.html', user=current_user)
 
     if request.method == 'HEAD':
         # if HEAD is supported properly, request parameters like

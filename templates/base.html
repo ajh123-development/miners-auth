@@ -1,50 +1,111 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Miners Online</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css"/>
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
     </head>
 
     <body>
-        <section class="hero is-primary is-fullheight">
+        <nav class="navbar is-fixed-top is-info" role="navigation" aria-label="main navigation">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a href="{{ url_for('main.index') }}" class="navbar-item mr-3">
+                        Miners Online
+                    </a>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="navbarMenu" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a href="{{ url_for('main.index') }}" class="navbar-item">
+                            Home
+                        </a>
+                    </div>
 
-            <div class="hero-head">
-                <nav class="navbar">
-                    <div class="container">
-                        <div id="navbarMenuHeroA" class="navbar-menu">
-                            <div class="navbar-end">
-                                <a href="{{ url_for('main.index') }}" class="navbar-item">
-                                    Home
-                                </a>
+                    <div class="navbar-end">
+                        {% if not user.is_anonymous %}
+                        <div class="navbar-item has-dropdown has-divider is-hoverable">
+                            <a class="navbar-link is-arrowless">
+                                <span class="mr-3">{{ user.name }}</span>
+                                <span class="icon">
+                                    <img 
+                                        src="https://api.dicebear.com/5.x/initials/svg?seed={{ user.encoded_name }}&radius=50" 
+                                        alt="{{ user.name }}"
+                                        width="150"
+                                        height="150"
+                                    >
+                                </span>
+                            </a>
+                            <div class="navbar-dropdown is-right">
                                 <a href="{{ url_for('main.profile') }}" class="navbar-item">
-                                    Profile
+                                    <span class="icon"><i class="mdi mdi-account"></i></span>
+                                    <span>My Profile</span>
                                 </a>
-                                <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                                    Login
-                                </a>
-                                <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                                    Sign Up
-                                </a>
+                                <hr class="navbar-divider">
                                 <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-                                    Logout
+                                    <span class="icon"><i class="mdi mdi-logout"></i></span>
+                                    <span>Log Out</span>
                                 </a>
                             </div>
                         </div>
+                        {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                            Login
+                        </a>
+                        <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                            Sign Up
+                        </a>
+                        {% endif %}
                     </div>
-                </nav>
+                </div>
             </div>
+        </nav>
 
+        
+        {% if hideHero != true %}
+        <section class="hero is-primary is-fullheight">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                {% block content %}
+                {% block hero_content %}
                 {% endblock %}
                 </div>
             </div>
         </section>
-    </body>
+        {% endif %}
 
+        {% if hideContents %}
+        <section class="section is-fullheight mt-3">
+            {% block content %}
+            {% endblock %}
+        </section>
+        {% endif %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Get all "navbar-burger" elements
+                const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+                // Add a click event on each of them
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+
+                        // Get the target from the "data-target" attribute
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+
+                        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            });
+        </script>
+    </body>
 </html>
