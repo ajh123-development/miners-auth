@@ -18,6 +18,10 @@ class User(UserMixin, db.Model):
     def encoded_name(self):
         return urllib.parse.quote_plus(self.name)
 
+    @property
+    def formatted_datetime(self):
+        return self.created_at.strftime("%d/%m/%Y, %H:%M:%S")
+
     def is_authenticated(self):
         return self.authenticated
 

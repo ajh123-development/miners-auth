@@ -1,0 +1,11 @@
+{% extends "settings/admin_base.html" %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('main.index') }}">Home</a></li>
+<li><a href="{{ url_for('main.settings') }}">Settings</a></li>
+<li class="is-active"><a href="{{ url_for('main.apps') }}" aria-current="page">All Apps</a></li>
+{% endblock %}
+
+{% block main_content %}
+<h1 class="title">All Apps</h1>
+{% endblock %}
